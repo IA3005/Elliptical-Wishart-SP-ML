@@ -3,6 +3,59 @@ from scipy.io import loadmat
 from typing import Tuple, Dict
 from numpy import ndarray
 import os
+import wget
+
+
+def download_hyperspectral_data(data_path,dataset_name):
+    """Download hyperspectral dataset from the web."""
+    datasets = {
+        'indianpines': [
+            'https://www.ehu.eus/ccwintco/uploads/2/22/Indian_pines.mat',
+            'https://www.ehu.eus/ccwintco/uploads/6/67/Indian_pines_corrected.mat',
+            'https://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat'
+        ],
+        'salinas': [
+            'https://www.ehu.eus/ccwintco/uploads/f/f1/Salinas.mat',
+            'https://www.ehu.eus/ccwintco/uploads/a/a3/Salinas_corrected.mat',
+            'https://www.ehu.eus/ccwintco/uploads/f/fa/Salinas_gt.mat',
+            ],
+        'Pavia': [
+            'https://www.ehu.eus/ccwintco/uploads/e/e3/Pavia.mat',
+            'https://www.ehu.eus/ccwintco/uploads/5/53/Pavia_gt.mat'
+            ],
+        'PaviaU': [
+            'https://www.ehu.eus/ccwintco/uploads/e/ee/PaviaU.mat',
+            'https://www.ehu.eus/ccwintco/uploads/5/50/PaviaU_gt.mat'
+            ],
+        'KSC': [
+            'http://www.ehu.es/ccwintco/uploads/2/26/KSC.mat',
+            'http://www.ehu.es/ccwintco/uploads/a/a6/KSC_gt.mat'
+            ]
+        }
+
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
+    
+    if dataset_name in datasets.keys():
+        print(f"Downloading {dataset_name} dataset...")
+        if not os.path.exists(data_path+f"/{dataset_name}"):
+            print(f"Creating {dataset_name} directory...")
+            os.makedirs(data_path+f"/{dataset_name}")
+        try:
+            for url in datasets[dataset_name]:
+                filename = url.split("/")[-1]
+                if not os.path.exists(data_path+f"/{dataset_name}/{filename}"):
+                    print(f"Downloading {url}...")
+                    wget.download(url, out=data_path+f"/{dataset_name}")
+                    print("\n")
+                else:
+                    print(f"File {filename} already exists. Skipping...")
+        except Exception as e:
+            print(f"Error downloading {dataset_name} dataset:")
+            print(f"{e}")
+    else:
+        print("Wrong dataset name!")
+    return None
 
 
 def read_salinas(data_path: str, version: str="corrected") -> \
@@ -255,6 +308,7 @@ def read_botswana(data_path: str) -> \
 def read_data(dataset_path: str, data_name: str, small_dataset = False,
               reduce_factor=5) -> \
         Tuple[ndarray, ndarray, Dict[int, str]]:
+    download_hyperspectral_data(dataset_path,data_name)
     if data_name.lower() == 'salinas':
         data, labels, labels_names = read_salinas(os.path.join(dataset_path, 'salinas'))
     elif data_name.lower() == 'indianpines':
