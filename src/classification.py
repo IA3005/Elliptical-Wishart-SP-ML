@@ -320,9 +320,9 @@ class tWDA(BaseEstimator, ClassifierMixin, TransformerMixin):
         #estimate dfs if needed        
         if self.dfs is None:
             if self.n_jobs==1:
-                self.dfs = [self.df_estim(S[y==self.classes_[i]]) for i in range(self.Nc)]
+                self.dfs = [self.estimate_df(S[y==self.classes_[i]]) for i in range(self.Nc)]
             else:
-                self.dfs = Parallel(n_jobs=self.n_jobs)(delayed(self.df_estim)(S[y==self.classes_[i]]) for i in range(self.Nc))
+                self.dfs = Parallel(n_jobs=self.n_jobs)(delayed(self.estimate_df)(S[y==self.classes_[i]]) for i in range(self.Nc))
         else:
             if len(self.dfs)==1:
                 self.dfs = [self.dfs[0] for _ in range(self.Nc) ]
@@ -518,11 +518,11 @@ class tWDA_noStack(BaseEstimator, ClassifierMixin, TransformerMixin):
             if self.n_jobs==1:
                 for i in range(self.Nc):
                     for f in range(self.n_freqs):
-                        self.dfs[i,f] = self.df_estim(np.reshape(S[y==self.classes_[i],f,:,:],(len(y[y==self.classes_[i]]),p,p)))
+                        self.dfs[i,f] = self.estimate_df(np.reshape(S[y==self.classes_[i],f,:,:],(len(y[y==self.classes_[i]]),p,p)))
                 
             else:
                 for f in range(self.n_freqs):
-                    dfs_ = Parallel(n_jobs=self.n_jobs)(delayed(self.pop_)(np.reshape(S[y==self.classes_[i],f,:,:],(len(y[y==self.classes_[i]]),p,p))) for i in range(self.Nc))
+                    dfs_ = Parallel(n_jobs=self.n_jobs)(delayed(self.estimate_df)(np.reshape(S[y==self.classes_[i],f,:,:],(len(y[y==self.classes_[i]]),p,p))) for i in range(self.Nc))
                     for i in range(self.Nc):
                         self.dfs[i,f] = dfs_[i]       
         else:
