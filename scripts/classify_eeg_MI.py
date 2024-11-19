@@ -196,6 +196,6 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5),fontsize=6.5)
 plt.title(f"Mean over {n_runs} runs and on all sessions :\n  withinsession classification with {n_classes} classes")
 #plt.ylim([0.25,0.95])
 #plt.grid(axis="y",which="both")
-plt.savefig(path0+"/withinsession classification on all sessions using {n_runs} runs.png")
+plt.savefig(path0+f"/withinsession classification on all sessions using {n_runs} runs.png")
 plt.show()
 
