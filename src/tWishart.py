@@ -196,7 +196,11 @@ def t_wish_est(S,n,df,algo="RCG",log_verbosity=0):
     else:
         optimizer = SteepestDescent(verbosity=0,log_verbosity=log_verbosity)  
 
-    optim = optimizer.run(problem, initial_point=init)
+    try: 
+        optim = optimizer.run(problem, initial_point=init)
+    except: 
+        optim = optimizer.run(problem, initial_point=np.eye(p))
+                              
     if log_verbosity==0:
         #return only the MLE
         return optim.point
