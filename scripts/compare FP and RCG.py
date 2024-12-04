@@ -39,7 +39,7 @@ if __name__ == '__main__':
         
         #generate `K`` random matrices drawn from t- Wishart with `Sigma` as true center
         #and `df`as true shape parameter
-        samples = t_wishart_rvs(Sigma,n,df,K,random_state=seed+i)
+        samples = t_wishart_rvs(n,Sigma,df,K,random_state=seed+i)
     
         #run estimation algorithms
         estimsFP,timesFP,errorsFP = fixed_point(samples,n,df,threshold=thresholdFP,maxiters=100000)
