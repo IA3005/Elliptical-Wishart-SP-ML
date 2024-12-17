@@ -252,7 +252,7 @@ class tW_clustering(BaseEstimator, ClassifierMixin, TransformerMixin):
         discrimination : ndarray, shape (n_matrices, n_classes)
             Discrimination to each centroid.
         """
-        return self._predict_distances(X)
+        return self._predict_discimination(X)
 
     def fit_predict(self, X, y):
         """Fit and predict in one function."""
