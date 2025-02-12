@@ -6,7 +6,7 @@ import sys
 import yaml
 sys.path.append((os.path.dirname(__file__)))
 
-from src.classification import KMeans_tW
+from src.clustering import KMeans_tW
 from src.RemoteSensoringUtils import read_data
 from src.hyperspectral_clustering_utils import (
         PCAImage, SlidingWindowVectorize,
